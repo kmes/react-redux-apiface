@@ -1,0 +1,16 @@
+.DS_Store
+DOMbase/.DS_Store
+
+/nbproject
+/node_modules
+/bower_components
+
+.sass-cache/
+
+dist/*
+viewer/*
+!viewer/fonts/
+
+
+npm-debug.log
+.idea/
