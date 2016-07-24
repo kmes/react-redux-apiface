@@ -7,10 +7,10 @@ DOMbase/.DS_Store
 
 .sass-cache/
 
-dist/*
-viewer/*
-!viewer/fonts/
-
+build/*
+!build/index.html
+deploy/*
+!deploy/index.html
 
 npm-debug.log
 .idea/
