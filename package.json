@@ -10,7 +10,7 @@
   "scripts": {
     "build": "webpack --progress -p",
     "deploy": "webpack --progress -p",
-    "start": "webpack-dev-server"
+    "server": "webpack-dev-server"
   },
   "devDependencies": {
     "babel-core": "^6.4.5",
@@ -25,13 +25,12 @@
     "webpack-merge": "^0.7.3"
   },
   "dependencies": {
+    "apiface": "kmes/apiface",
     "babel-polyfill": "^6.7.4",
     "babel-preset-stage-1": "^6.1.18",
     "classnames": "^2.2.3",
     "react": "^0.14.6",
-    "react-cookie": "^0.4.5",
     "react-dom": "^0.14.6",
-    "react-hammerjs": "^0.4.5",
     "react-redux": "^4.4.0",
     "redux": "^3.3.1",
     "redux-promise": "^0.5.1",

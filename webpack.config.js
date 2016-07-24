@@ -17,7 +17,7 @@ const PATHS = {
     //dist: path.resolve(__dirname, 'build/dist'),
 
     deployRoot: path.resolve(__dirname, 'deploy'),
-    deployDist: path.resolve(__dirname, 'deploy/dist'),
+    deployDist: path.resolve(__dirname, 'deploy/dist')
 };
 process.env.BABEL_ENV = TARGET;
 
@@ -27,13 +27,6 @@ process.env.HOST = process.env.HOST || 'localhost';
 var common = {
     entry: {
         app: PATHS.app
-    },
-    devtool: 'cheap-module-source-map',
-    output: {
-        //path: PATHS.dist, //for production
-        path: PATHS.deployDist,
-        filename: 'app.js', // Notice we use a variable
-        publicPath: process.env.npm_config_publicpath
     },
     module: {
         loaders: [
@@ -67,50 +60,48 @@ var common = {
     ]
 };
 
-if(TARGET === 'build') {
-    common['output'] = {
-        path: PATHS.build,
-        filename: '[name].js', // Notice we use a variable
-        publicPath: process.env.npm_config_publicpath
-    };
-}
-else if(TARGET === 'start' || !TARGET) { //dev server
-    module.exports = merge(common, {
-
-        output: {
+switch( TARGET ) {
+    case 'server' :
+        common['devTool'] = 'cheap-source-map';
+        common['output'] = {
             path: PATHS.build,
             filename: '[name].js', // Notice we use a variable
             publicPath: process.env.npm_config_publicpath
-        },
-
-        //devtool: 'eval-source-map',
-        devtool: 'cheap-source-map',
-        devServer: {
+        };
+        common['devServer'] = {
             contentBase: PATHS.build,
-            //contentBase: __dirname,
             historyApiFallback: true,
             hot: true,
             inline: true,
             progress: true,
             //warnings: false,
-
-            // display only errors to reduce the amount of output
-            stats: 'errors-only',
-
-            // parse host and port from env so this is easy
-            // to customize
+            stats: 'errors-only', // display only errors to reduce the amount of output
             host: process.env.HOST,
             port: process.env.PORT
-        },
-        plugins: [
+        };
+        common['plugins'] = [
             new webpack.HotModuleReplacementPlugin(),
             new NpmInstallPlugin({
                 save: true // --save
             })
-        ]
-    });
+        ];
+        break;
+    case 'build' :
+        common['devTool'] = 'cheap-module-source-map';
+        common['output'] = {
+            path: PATHS.build,
+            filename: '[name].js', // Notice we use a variable
+            publicPath: process.env.npm_config_publicpath
+        };
+        break;
+    case 'deploy' :
+        common['devTool'] = 'cheap-module-source-map';
+        common['output'] = {
+            path: PATHS.deployDist,
+            filename: 'app.js', // Notice we use a variable
+            publicPath: process.env.npm_config_publicpath
+        };
+        break;
 }
 
-if(TARGET === 'build' || TARGET === 'deploy') {
-    module.exports = merge(common, {});
-}
+module.exports = common;
